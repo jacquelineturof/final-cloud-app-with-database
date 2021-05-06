@@ -66,10 +66,11 @@
             {% if user.is_authenticated %}
             <button data-toggle="collapse" data-target="#exam">Start Exam</button>
             <div id="exam" class="collapse">
+            <form id="questionform" action="{% url 'onlinecourse:submit' course.id %}" method="post">
                 {% for lesson in course.lesson_set.all %}
                     {% for question in lesson.question_set.all %}
 
-                    <form id="questionform" action="point to a submit view" method="post">
+
                         <div class="card mt-1">
                             <div class="card-header"><h5>{{ question.question_text}}</h5></div>
                             {% csrf_token %}
@@ -85,11 +86,10 @@
                                 </div>
                             {% endfor %}
                         </div>
-                    <input class="btn btn-success btn-block" type="submit" value="Submit">
-                </form>
-
                     {% endfor %}
                 {% endfor %}
+                <input class="btn btn-success btn-block" type="submit" value="Submit">
+                </form>
                 </div>
             {% endif %}
             <!-- <HINT> Each example will have many questions -->
