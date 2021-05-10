@@ -146,15 +146,16 @@ def show_exam_result(request, course_id, submission_id):
     context = {}
     course = get_object_or_404(Course, pk=course_id)
     submission = get_object_or_404(Submission, pk=submission_id)
-    grade = 0
+    points_earned = 0
+    total = 0
     print(submission)
     for choice in submission.chocies.all():
-        if choice.is_correct:
-            grade += 1
+        if choice.is_correct > 0:
+            points_earned += choice.question_id.grade
+            total += choice.question_id.grade
+        else:
+            total += choice.question_id.grade
     context['course'] = course
-    context['selected_id'] = submission.chocies
-    context['grade'] = grade
+    context['selected_id'] = submission.chocies.all()
+    context['grade'] = int(points_earned / total * 100)
     return render(request, 'onlinecourse/exam_result_bootstrap.html', context)
-
-
-
